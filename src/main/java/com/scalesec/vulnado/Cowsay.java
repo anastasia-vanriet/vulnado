@@ -1,5 +1,7 @@
 package com.scalesec.vulnado;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -14,7 +16,7 @@ public class Cowsay {
 
     try {
       Process process = processBuilder.start();
-      BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+      BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), UTF_8));
 
       String line;
       while ((line = reader.readLine()) != null) {
