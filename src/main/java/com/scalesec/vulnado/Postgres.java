@@ -1,10 +1,12 @@
 package com.scalesec.vulnado;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.util.UUID;
@@ -68,7 +70,7 @@ public class Postgres {
 
             // digest() method is called to calculate message digest
             //  of an input digest() return array of byte
-            byte[] messageDigest = md.digest(input.getBytes());
+            byte[] messageDigest = md.digest(input.getBytes(UTF_8));
 
             // Convert byte array into signum representation
             BigInteger no = new BigInteger(1, messageDigest);
