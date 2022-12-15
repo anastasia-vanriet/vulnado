@@ -1,11 +1,12 @@
 package com.scalesec.vulnado;
 
-import org.apache.catalina.Server;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
+import org.apache.catalina.Server;
 
 public class Comment {
   public String id, username, body;
@@ -19,7 +20,7 @@ public class Comment {
   }
 
   public static Comment create(String username, String body){
-    boolean comp = username == body;
+    
     long time = new Date().getTime();
     Timestamp timestamp = new Timestamp(time);
     Comment comment = new Comment(UUID.randomUUID().toString(), username, body, timestamp);
