@@ -1,5 +1,6 @@
 package com.scalesec.vulnado;
 
+import com.google.errorprone.annotations.Var;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,8 +23,8 @@ public class Comment {
   public static Comment create(String username, String body){
     
     long time = new Date().getTime();
-    Timestamp timestamp = new Timestamp(time);
-    Comment comment = new Comment(UUID.randomUUID().toString(), username, body, timestamp);
+    var timestamp = new Timestamp(time);
+    var comment = new Comment(UUID.randomUUID().toString(), username, body, timestamp);
     try {
       if (comment.commit()) {
         return comment;
@@ -36,7 +37,7 @@ public class Comment {
   }
 
   public static List<Comment> fetch_all() {
-    Statement stmt = null;
+    @Var Statement stmt = null;
     List<Comment> comments = new ArrayList();
     try {
       Connection cxn = Postgres.connection();
@@ -49,7 +50,7 @@ public class Comment {
         String username = rs.getString("username");
         String body = rs.getString("body");
         Timestamp created_on = rs.getTimestamp("created_on");
-        Comment c = new Comment(id, username, body, created_on);
+        var c = new Comment(id, username, body, created_on);
         comments.add(c);
       }
       cxn.close();
@@ -67,7 +68,7 @@ public class Comment {
       Connection con = Postgres.connection();
       PreparedStatement pStatement = con.prepareStatement(sql);
       pStatement.setString(1, id);
-      return 1 == pStatement.executeUpdate();
+      return pStatement.executeUpdate() == 1;
     } catch(Exception e) {
       e.printStackTrace();
     } finally {
@@ -83,6 +84,6 @@ public class Comment {
     pStatement.setString(2, this.username);
     pStatement.setString(3, this.body);
     pStatement.setTimestamp(4, this.created_on);
-    return 1 == pStatement.executeUpdate();
+    return pStatement.executeUpdate() == 1;
   }
 }

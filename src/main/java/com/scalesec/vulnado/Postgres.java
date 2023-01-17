@@ -2,6 +2,7 @@ package com.scalesec.vulnado;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import com.google.errorprone.annotations.Var;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -73,10 +74,10 @@ public class Postgres {
             byte[] messageDigest = md.digest(input.getBytes(UTF_8));
 
             // Convert byte array into signum representation
-            BigInteger no = new BigInteger(1, messageDigest);
+            var no = new BigInteger(1, messageDigest);
 
             // Convert message digest into hex value
-            String hashtext = no.toString(16);
+            @Var String hashtext = no.toString(16);
             while (hashtext.length() < 32) {
                 hashtext = "0" + hashtext;
             }
@@ -91,7 +92,7 @@ public class Postgres {
 
     private static void insertUser(String username, String password) {
        String sql = "INSERT INTO users (user_id, username, password, created_on) VALUES (?, ?, ?, current_timestamp)";
-       PreparedStatement pStatement = null;
+       @Var PreparedStatement pStatement = null;
        try {
           pStatement = connection().prepareStatement(sql);
           pStatement.setString(1, UUID.randomUUID().toString());
@@ -105,7 +106,7 @@ public class Postgres {
 
     private static void insertComment(String username, String body) {
         String sql = "INSERT INTO comments (id, username, body, created_on) VALUES (?, ?, ?, current_timestamp)";
-        PreparedStatement pStatement = null;
+        @Var PreparedStatement pStatement = null;
         try {
             pStatement = connection().prepareStatement(sql);
             pStatement.setString(1, UUID.randomUUID().toString());

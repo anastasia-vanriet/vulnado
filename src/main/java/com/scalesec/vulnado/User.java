@@ -2,6 +2,7 @@ package com.scalesec.vulnado;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import com.google.errorprone.annotations.Var;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -39,8 +40,8 @@ public class User {
   }
 
   public static User fetch(String un) {
-    Statement stmt = null;
-    User user = null;
+    @Var Statement stmt = null;
+    @Var User user = null;
     try {
       Connection cxn = Postgres.connection();
       stmt = cxn.createStatement();
