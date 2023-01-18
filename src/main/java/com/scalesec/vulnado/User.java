@@ -1,12 +1,15 @@
 package com.scalesec.vulnado;
 
-import java.sql.Connection;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import io.jsonwebtoken.Jwts;
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+import com.google.errorprone.annotations.Var;
 import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.crypto.SecretKey;
 
 public class User {
@@ -19,14 +22,14 @@ public class User {
   }
 
   public String token(String secret) {
-    SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
+    SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(UTF_8));
     String jws = Jwts.builder().setSubject(this.username).signWith(key).compact();
     return jws;
   }
 
   public static void assertAuth(String secret, String token) {
     try {
-      SecretKey key = Keys.hmacShaKeyFor(secret.getBytes());
+      SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(UTF_8));
       Jwts.parser()
         .setSigningKey(key)
         .parseClaimsJws(token);
@@ -37,8 +40,8 @@ public class User {
   }
 
   public static User fetch(String un) {
-    Statement stmt = null;
-    User user = null;
+    @Var Statement stmt = null;
+    @Var User user = null;
     try {
       Connection cxn = Postgres.connection();
       stmt = cxn.createStatement();
