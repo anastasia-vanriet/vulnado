@@ -23,7 +23,7 @@ public class LinkLister {
 
   public static List<String> getLinksV2(String url) throws BadRequest {
     try {
-      URL aUrl= new URL(url);
+      var aUrl= new URL(url);
       String host = aUrl.getHost();
       System.out.println(host);
       if (host.startsWith("172.") || host.startsWith("192.168") || host.startsWith("10.")){
