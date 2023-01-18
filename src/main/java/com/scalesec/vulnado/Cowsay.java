@@ -1,22 +1,25 @@
 package com.scalesec.vulnado;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+import com.google.errorprone.annotations.Var;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 public class Cowsay {
   public static String run(String input) {
-    ProcessBuilder processBuilder = new ProcessBuilder();
+    var processBuilder = new ProcessBuilder();
     String cmd = "/usr/games/cowsay '" + input + "'";
     System.out.println(cmd);
     processBuilder.command("bash", "-c", cmd);
 
-    StringBuilder output = new StringBuilder();
+    var output = new StringBuilder();
 
     try {
       Process process = processBuilder.start();
-      BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+      var reader = new BufferedReader(new InputStreamReader(process.getInputStream(), UTF_8));
 
-      String line;
+      @Var String line;
       while ((line = reader.readLine()) != null) {
         output.append(line + "\n");
       }
